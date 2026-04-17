@@ -1,0 +1,3407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#F5F0E8"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <title>Victor Mulé — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Chargement asynchrone des polices : évite le blocage du rendu -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" onload="this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
+
+  <style>
+    /* =============================================
+       TOKENS & RESET
+    ============================================= */
+    :root {
+      --ivory:    #F5F0E8;
+      --ivory-d:  #EDE6D8;
+      --ivory-dd: #E0D6C4;
+      --ink:      #1A1612;
+      --ink-soft: #3D342C;
+      --ink-muted:#584f48;
+      --gold:     #bd6745;
+      --gold-l:   #d4915a;
+      --gold-pale:#EDD98A;
+      --gold-line:rgba(176,138,62,.25);
+      --cinabar:  #942f1f;
+      --paper-tex: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'DM Sans', system-ui, sans-serif;
+
+      --radius-card: 4px;
+      --shadow-card: 0 2px 24px rgba(26,22,18,.07), 0 1px 4px rgba(26,22,18,.05);
+      --shadow-hover: 0 12px 48px rgba(26,22,18,.13), 0 2px 8px rgba(26,22,18,.07);
+
+      --nav-h: 68px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: var(--paper-tex);
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 1;
+    }
+
+    a { color: var(--gold); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    a:hover { color: var(--gold-l); }
+
+    img { display: block; max-width: 100%; }
+
+    /* =============================================
+       CUSTOM CURSOR
+    ============================================= */
+    .cursor-dot {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: opacity .2s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .25s ease, height .25s ease, opacity .2s;
+      opacity: .5;
+      mix-blend-mode: multiply;
+    }
+    body.cursor-hover .cursor-ring {
+      width: 52px; height: 52px;
+      opacity: .8;
+    }
+
+    /* =============================================
+       NAV
+    ============================================= */
+    nav {
+      position: sticky;
+      top: 0;
+      height: var(--nav-h);
+      z-index: 500;
+      background: rgba(245,240,232,.92);
+      -webkit-backdrop-filter: blur(16px) saturate(1.5);
+      backdrop-filter: blur(16px) saturate(1.5);
+      border-bottom: 1px solid var(--gold-line);
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-monogram {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: .5px;
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: .8px;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .brand-text span {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-family: var(--font-sans);
+      font-weight: 300;
+    }
+
+    /* Liens desktop */
+    .nav-brand-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-brand-links a {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color .2s;
+    }
+
+    .nav-brand-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 100%;
+      height: 1px;
+      background: var(--gold);
+      transition: right .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    .nav-brand-links a:hover { color: var(--ink); }
+    .nav-brand-links a:hover::after { right: 0; }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      min-height: calc(100vh - var(--nav-h));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      align-items: center;
+      gap: 80px;
+      position: relative;
+    }
+
+    /* Decorative vertical line */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 10%; bottom: 10%;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold-line) 30%, var(--gold-line) 70%, transparent);
+    }
+
+    .hero-left {}
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-family: var(--font-sans);
+      font-weight: 400;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp .8s .2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--gold);
+    }
+
+
+    /* === D'ENCRE — police + animation lettre par lettre === */
+
+    @font-face {
+      font-family: 'ClarendonCondensed';
+      src: url('data:font/otf;base64,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Ac8AFQHPACEA/wAxAP8AKQNBAIEDQQB8A0EAgQGjABMD2gBEAfQAAQIKABwByAAeAgIAIAIEABwB6wAcAgAAHgIwAAgBNgAfAXIAAQIwABwB5AAcAqQAGgIsABwB3QAeAfsAHAH2AB4CLwAcAd8AFwH9ABMCBAAWAe8ABALSAAMB9v/+AdYABAHWABMBVwBdARb/5AFXACID6ADJAfQAAAH0AFgB+QAaAcYACAGeAB0B0QAcAa8AHAETAA8BzwASAeYADwD7AA8BF//WAe0ADwDzAAsC1wATAesAEwGqABwB0QATAcYAHAFmABMBowAiATQACAHmAA8Blv/7AnYAAQG1AAcBl//sAZQAFQH0AFcB9ADPAfQAVQNBAFcBJABAAc8ALgHPABYBz//7Ac8AAAH0AM8B6wAlAfQAVAM2ADsBewAUAawAHANBAHwDNgA7AfQAZAFJABUDQQB8ATIACQEyAAoB9ACSAkL/ywH0ABsA5wAmAfQAagEyAEUBQAAVAawAHALuAEMC7gBDAu4ACQGjACIB9AABAfQAAQH0AAEB9AABAfQAAQH0AAEDGv/sAcgAHgIEABwCBAAcAgQAHAIEABwBNv/5ATYAHwE2//4BNv/1AgkAFQIsABwB3QAeAd0AHgHdAB4B3QAeAd0AHgNBAIwB3QAeAgQAFgIEABYCBAAWAgQAFgHWAAQB+wAcAd8AEwH5ABoB+QAaAfkAGgH5ABoB+QAaAfkAGgKkABoBngAdAa8AHAGvABwBrwAcAa8AHAD7/9wA+wAPAPv/4QD7/9gBqgAcAesAEwGqABwBqgAcAaoAHAGqABwBqgAcA0EAfAGqABwB5gAPAeYADwHmAA8B5gAPAZf/7AHRABMBl//sAPsADwHrAAUBAf/8Au4AIQKdABwB3wAXAaMAIgHWAAQB1gATAZQAFQHP/88B9ABdAfQAXQH0AFoB9ACyAfQAeQH0AJQB9ABaAfQAiQH0AAAD6AAAAOcAIwDnAB8A5wAdAbMAIwGzAB8BswAdAesAHQHrAB0CTgCWA+gAWQOVABcA9QAcAPUAHACn/1kBz//7AzYAcgNBAHwCDwAPAA8AAA==') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    /* Conteneur — toujours visible, couleur encre par défaut */
+    .h1-encre {
+      display: block;
+      position: relative;
+      font-family: 'ClarendonCondensed', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(62px, 10vw, 128px);
+      letter-spacing: -2px;
+      line-height: .9;
+    }
+
+    /* Texture activée par JS une fois l'image confirmée chargée */
+    .h1-encre.texture-ready {
+      background-image: url('image/TitreBg2.png');
+      background-size: 150% auto;
+      background-position: center 30%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    @media (max-width: 640px) {
+      .h1-encre { font-size: clamp(52px, 14vw, 80px); letter-spacing: -1px; }
+    }
+
+    /* Chaque lettre — invisible et légèrement décalée au départ */
+    .encre-char {
+      display: inline-block;
+      white-space: pre;
+      opacity: 0;
+      transform: translateY(0.05em);
+      /* Filtre SVG sur les chars individuels uniquement */
+      filter: url(#encre-distort) blur(0.8px);
+      transition:
+        opacity   1.4s ease,
+        filter    1.8s ease,
+        transform 2.8s ease;
+    }
+
+    /* Lettre imprimée */
+    .encre-char.inked {
+      opacity: 1;
+      filter: url(#encre-distort);
+      transform: translateY(0);
+    }
+
+        .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(52px, 8.5vw, 108px);
+      font-weight: 900;
+      line-height: .95;
+      letter-spacing: -3px;
+      margin-bottom: 12px;
+      /* Le h1 est visible dès le départ — les enfants gèrent leur propre animation */
+    }
+
+    /* "et de pixel" — contraste poids/style */
+    .hero h1 .h1-light {
+      display: block;
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(44px, 7vw, 90px);
+      color: var(--gold);
+      letter-spacing: .5px;
+      line-height: 1.05;
+      word-spacing: .12em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink-muted);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp .9s .5s forwards;
+    }
+
+    /* ── SCAN VERTICAL hero-desc ── */
+    .hero-desc {
+      position: relative;
+      max-width: 520px;
+      opacity: 0;
+      animation: fadeUp .9s .65s forwards;
+      /* Justification sans césure */
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: none;
+      word-break: keep-all;
+      line-height: 1.9;
+      /* La taille de référence : on laisse le JS tout construire */
+      font-size: 0; /* évite l'espace fantôme entre les spans inline-block */
+      overflow: visible;
+    }
+
+    /*
+     * Chaque caractère = une boîte de largeur fixe (définie par JS).
+     * À l'intérieur : deux <span> superposés en absolute.
+     * La boîte ne change jamais → zéro décalage.
+     */
+    .hero-desc .sl {        /* lettre-box */
+      display: inline-block;
+      position: relative;
+      /* width et height mis par JS */
+      vertical-align: baseline;
+      overflow: visible;
+    }
+
+    /* Espace entre les mots : un span dédié de largeur fixe */
+    .hero-desc .ss {
+      display: inline-block;
+      /* width mis par JS */
+    }
+
+    /* Les deux couches dans la boîte */
+    .hero-desc .sl-ms,   /* manuscrite — visible par défaut */
+    .hero-desc .sl-nu {  /* numérique  — cachée par défaut  */
+      position: absolute;
+      left: 50%; top: 0;
+      transform: translateX(-50%);
+      white-space: pre;
+      line-height: inherit;
+      pointer-events: none;
+      transition: opacity .18s ease;
+      user-select: none;
+    }
+
+    .hero-desc .sl-ms {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--ink-soft);
+      opacity: 1;
+    }
+
+    .hero-desc .sl-nu {
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-weight: 300;
+      font-size: 15px;
+      color: var(--ink);
+      opacity: 0;
+    }
+
+    /* Lettre révélée (à gauche du faisceau) */
+    .hero-desc .sl.revealed .sl-ms { opacity: 0; }
+    .hero-desc .sl.revealed .sl-nu { opacity: 1; }
+
+    /* Barre verticale de scan */
+    .scan-vbeam {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom,
+        transparent,
+        var(--gold) 10%,
+        var(--gold-l) 50%,
+        var(--gold) 90%,
+        transparent
+      );
+      box-shadow: 0 0 7px 1px rgba(172, 129, 72, 0.45);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s;
+      z-index: 3;
+    }
+    .scan-vbeam::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -12px; width: 24px;
+      background: linear-gradient(to right,
+        transparent, rgba(176,138,62,.06), transparent
+      );
+    }
+    .hero-desc .scan-vbeam { opacity: 1; }
+
+    .hero-cta {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .9s .8s forwards;
+    }
+
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.2s .6s forwards;
+    }
+
+    /* Ornamental frame for hero right */
+    .hero-ornament {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      /* Fallback pour navigateurs sans support aspect-ratio (pre-Chrome88/Safari15) */
+      padding-top: 133%;
+    }
+    @supports (aspect-ratio: 1) {
+      .hero-ornament {
+        padding-top: 0;
+        aspect-ratio: 3/4;
+      }
+    }
+
+    .hero-ornament-frame {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--gold-line);
+      border-radius: 2px;
+    }
+
+    .hero-ornament-frame::before,
+    .hero-ornament-frame::after {
+      content: '';
+      position: absolute;
+      width: 28px; height: 28px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+
+    .hero-ornament-frame::before {
+      top: -1px; left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .hero-ornament-frame::after {
+      bottom: -1px; right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .hero-ornament-inner {
+      position: absolute;
+      inset: 16px;
+      background: var(--ivory-dd);
+      border-radius: 1px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 28px 24px;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-number {
+      font-family: var(--font-serif);
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    .hero-stat-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--gold-line);
+    }
+
+    .hero-quote {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+    }
+
+    .hero-quote p {
+      font-family: var(--font-serif);
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      letter-spacing: .15px;
+    }
+
+    .hero-quote footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      /* Annule le style du footer global */
+      background: rgba(245,240,232,.55);
+      border: 1px solid rgba(176,138,62,.18);
+      border-radius: 2px;
+      padding: 18px 20px;
+      margin-top: 4px;
+    }
+
+    .hero-quote-author {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--ink-muted);
+      letter-spacing: .3px;
+    }
+
+    .hero-quote-source {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      opacity: .6;
+      margin-bottom: 16px;
+    }
+
+    .hero-quote-sep {
+      width: 28px; height: 1px;
+      background: var(--gold-line);
+      margin: 8px 0 12px;
+    }
+
+    .hero-quote-name {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .hero-quote-role {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: .5px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .hero-quote-role a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold-line);
+      transition: color .2s, border-color .2s;
+    }
+
+    .hero-quote-role a:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1px solid var(--ink);
+      transition: background .2s, color .2s;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: transparent;
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1px solid var(--gold-line);
+      transition: border-color .2s, color .2s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--ink);
+    }
+
+    .btn-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-decoration: none;
+      border: 1px solid var(--ivory-dd);
+      border-radius: 2px;
+      background: var(--ivory);
+      transition: border-color .2s, background .2s, color .2s;
+    }
+
+    .btn-card:hover {
+      border-color: var(--gold);
+      background: var(--ivory-d);
+      color: var(--ink);
+    }
+
+    /* =============================================
+       LAYOUT — CONTAINER & SECTIONS
+    ============================================= */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .section {
+      padding: 96px 0;
+      position: relative;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--gold-line);
+    }
+
+    /* Section header */
+    .section-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: -.5px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .section-lead {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-style: italic;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    /* =============================================
+       TABS
+    ============================================= */
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--gold-line);
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      border: none;
+      background: none;
+      cursor: pointer;
+      position: relative;
+      transition: color .2s;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    .tab:hover { color: var(--ink); }
+
+    .tab.active {
+      color: var(--ink);
+      border-bottom-color: var(--gold);
+    }
+
+    .hidden { display: none !important; }
+
+    /* =============================================
+       CARDS GRID — RESTAURATION
+    ============================================= */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .card {
+      background: var(--ivory-d);
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-card);
+      transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s;
+      cursor: default;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      z-index: 2;
+    }
+
+    /* Gold corner accent on hover */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--gold) 0, var(--gold) 1px, transparent 1px, transparent 50%, var(--gold) 50%, var(--gold) 51%, transparent 51%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .card:hover::after { opacity: 1; }
+
+    .card-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      filter: sepia(.08) contrast(1.05);
+      transition: filter .4s, transform .4s;
+    }
+
+    .card:hover .card-img {
+      filter: sepia(.03) contrast(1.07);
+      transform: scale(1.03);
+    }
+
+    .card-body {
+      padding: 20px 22px 22px;
+    }
+
+    .card-kicker {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-location {
+      font-size: 11px;
+      color: var(--ink-muted);
+      font-style: italic;
+      font-family: var(--font-serif);
+    }
+
+    /* =============================================
+       NUMÉRIQUE — CARDS LARGE
+    ============================================= */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .num-card {
+      background: var(--ivory-d);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s;
+      border: 1px solid var(--gold-line);
+    }
+
+    .num-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .num-card-img-wrap {
+      position: relative;
+      overflow: hidden;
+      height: 240px;
+      background: var(--ivory-dd);
+    }
+
+    .num-card-img-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+    }
+
+    .num-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(.1) contrast(1.05);
+      transition: transform .5s;
+    }
+
+    .num-card:hover .num-card-img { transform: scale(1.04); }
+
+    .num-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,22,18,.4), transparent 50%);
+    }
+
+    .num-card-body {
+      padding: 24px 26px 26px;
+    }
+
+    .num-card-kicker {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .num-card-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .num-card-desc {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* =============================================
+       RECHERCHE — TIMELINE STAGES
+    ============================================= */
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 8px; bottom: 0; left: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), var(--gold-line) 80%, transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 56px;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -44px;
+      top: 6px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 3px var(--ivory), 0 0 0 4px var(--gold-line);
+    }
+
+    .timeline-card {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      background: var(--ivory-d);
+      border: 1px solid var(--gold-line);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      transition: box-shadow .3s;
+    }
+
+    .timeline-card:hover { box-shadow: var(--shadow-card); }
+
+    .timeline-text {
+      padding: 28px 32px;
+    }
+
+    .timeline-kicker {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .timeline-title {
+      font-family: var(--font-serif);
+      font-size: 21px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .timeline-desc {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    .timeline-contact {
+      font-size: 13px;
+      color: var(--ink-muted);
+      font-style: italic;
+      font-family: var(--font-serif);
+    }
+
+    .timeline-media {
+      position: relative;
+      overflow: hidden;
+      background: var(--ivory-dd);
+      border-left: 1px solid var(--gold-line);
+    }
+
+    .timeline-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(.08);
+      transition: transform .5s;
+    }
+
+    .timeline-card:hover .timeline-media img { transform: scale(1.04); }
+
+    /* Timeline alternée — confs */
+    .timeline-item:nth-child(even) .timeline-card {
+      grid-template-columns: 1fr 1.4fr;
+    }
+
+    .timeline-item:nth-child(even) .timeline-text {
+      order: 2;
+    }
+
+    .timeline-item:nth-child(even) .timeline-media {
+      order: 1;
+      border-left: none;
+      border-right: 1px solid var(--gold-line);
+    }
+
+    /* Carousel dans timeline */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+      min-height: 260px;
+    }
+
+    .carousel .track {
+      display: flex;
+      height: 100%;
+      will-change: transform;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+    }
+
+    .carousel .track img {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(.08);
+    }
+
+    /* =============================================
+       ARTICLES CARD
+    ============================================= */
+    .article-card {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      background: var(--ivory-d);
+      border: 1px solid var(--gold-line);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+
+    .article-card-body {
+      padding: 36px 40px;
+    }
+
+    .article-card-img {
+      overflow: hidden;
+      background: var(--ivory-dd);
+      border-left: 1px solid var(--gold-line);
+    }
+
+    .article-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(.1);
+    }
+
+    /* =============================================
+       CONTACT
+    ============================================= */
+    .contact-section {
+      background: var(--ink);
+      color: var(--ivory);
+      padding: 96px 0;
+    }
+
+    .contact-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-left .section-label { color: var(--gold-l); }
+    .contact-left .section-label::before { background: var(--gold-l); }
+
+    .contact-title {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 300;
+      color: var(--ivory);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .contact-title em {
+      font-style: italic;
+      color: var(--gold-l);
+    }
+
+    .contact-info {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .contact-info-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,.4);
+      font-family: var(--font-sans);
+    }
+
+    .contact-info-value {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--ivory);
+    }
+
+    .contact-info-value a {
+      color: var(--gold-l);
+    }
+
+    .contact-divider {
+      width: 40px; height: 1px;
+      background: rgba(176,138,62,.4);
+      margin: 8px 0;
+    }
+
+    /* Contact form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,.5);
+      font-family: var(--font-sans);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: rgba(245,240,232,.05);
+      border: 1px solid rgba(245,240,232,.12);
+      border-radius: 2px;
+      padding: 14px 16px;
+      color: var(--ivory);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+      transition: border-color .2s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold-l);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(245,240,232,.25);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit {
+      align-self: flex-start;
+      padding: 14px 32px;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .btn-submit:hover { background: var(--gold-l); }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid rgba(245,240,232,.06);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(245,240,232,.3);
+      font-family: var(--font-sans);
+      letter-spacing: .5px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,.3);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* =============================================
+       SCROLL REVEAL
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Stagger children */
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+    }
+
+    .reveal-stagger.is-visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: .05s; }
+    .reveal-stagger.is-visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: .15s; }
+    .reveal-stagger.is-visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: .25s; }
+    .reveal-stagger.is-visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: .35s; }
+    .reveal-stagger.is-visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: .45s; }
+    .reveal-stagger.is-visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: .55s; }
+    .reveal-stagger.is-visible > *:nth-child(7) { opacity:1; transform:none; transition-delay: .65s; }
+    .reveal-stagger.is-visible > *:nth-child(8) { opacity:1; transform:none; transition-delay: .75s; }
+
+    /* =============================================
+       KEYFRAMES
+    ============================================= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* =============================================
+       GOLD LINE CURSOR EFFECT
+    ============================================= */
+    .ink-line {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      overflow: hidden;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; padding-top: 64px; min-height: auto; padding-bottom: 64px; gap: 48px; }
+      .hero::before { display: none; }
+      .hero-right { display: none; }
+      .section-header { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .num-grid { grid-template-columns: 1fr; }
+      .timeline-card { grid-template-columns: 1fr; }
+      .timeline-item:nth-child(even) .timeline-card { grid-template-columns: 1fr; }
+      .timeline-item:nth-child(even) .timeline-text { order: unset; }
+      .timeline-item:nth-child(even) .timeline-media { order: unset; border-right: none; border-left: none; border-top: 1px solid var(--gold-line); }
+      .timeline-media { border-left: none; border-top: 1px solid var(--gold-line); height: 220px; }
+      .article-card { grid-template-columns: 1fr; }
+      .article-card-img { height: 200px; border-left: none; border-top: 1px solid var(--gold-line); }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* =============================================
+       NAV MOBILE — hamburger redesigné
+    ============================================= */
+
+    /* Hamburger — caché sur desktop */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+      border: none;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px; height: 1.5px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: transform .32s cubic-bezier(.4,0,.2,1), opacity .22s, width .32s cubic-bezier(.4,0,.2,1);
+      transform-origin: center;
+    }
+    /* Troisième trait plus court au repos — détail élégant */
+    .nav-toggle span:nth-child(3) { width: 14px; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 22px; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 22px; }
+
+    /* ── Desktop : drawer et barre cachés ── */
+    .nav-links  { visibility: hidden; pointer-events: none; }
+    .nav-drawer-bar { display: none; }
+
+    /* ── Overlay sombre derrière le drawer ── */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(26,22,18,0);
+      transition: background .35s ease;
+      pointer-events: none;
+    }
+    .nav-overlay.visible {
+      background: rgba(26,22,18,.45);
+      pointer-events: auto;
+    }
+
+    @media (max-width: 640px) {
+
+      /* ── Liens desktop masqués ── */
+      .nav-brand-links { display: none !important; }
+
+      /* ── Hamburger visible ── */
+      .nav-toggle { display: flex !important; }
+      .nav-inner { padding: 0 20px; }
+
+      /* ── Overlay activé ── */
+      .nav-overlay { display: block; }
+
+      /* ─────────────────────────────────────────
+         DRAWER — panneau ancré sous la navbar,
+         descend comme un rideau depuis la nav
+      ───────────────────────────────────────── */
+      .nav-links {
+        display: flex !important;
+        flex-direction: column !important;
+        position: fixed !important;
+        top: var(--nav-h) !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: auto !important;
+        z-index: 10000 !important;
+        background: var(--ivory) !important;
+        border-bottom: 1px solid var(--gold-line) !important;
+        box-shadow: 0 24px 64px rgba(26,22,18,.18), 0 4px 16px rgba(26,22,18,.08) !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        /* Fermé : clip depuis le haut */
+        clip-path: inset(0 0 100% 0) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transition:
+          clip-path .42s cubic-bezier(.4,0,.2,1),
+          opacity .28s ease,
+          visibility .42s !important;
+        /* Ligne dorée en haut du drawer */
+        border-top: 2px solid var(--gold) !important;
+      }
+      .nav-links.open {
+        clip-path: inset(0 0 0% 0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+      }
+
+      /* ── Barre interne (logo + close) — retirée, on utilise la nav existante ── */
+      .nav-drawer-bar { display: none !important; }
+
+      /* ── Zone de liens ── */
+      .nav-links-inner {
+        padding: 8px 0 max(16px, env(safe-area-inset-bottom, 16px));
+      }
+
+      /* ── Item de menu ── */
+      .nav-links a {
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 28px !important;
+        min-height: 64px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-decoration: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        position: relative !important;
+        overflow: hidden !important;
+        /* Typographie */
+        font-family: 'Cormorant Garamond', Georgia, serif !important;
+        font-size: 26px !important;
+        font-style: italic !important;
+        font-weight: 300 !important;
+        color: var(--ink-soft) !important;
+        letter-spacing: -.2px !important;
+        text-transform: none !important;
+        /* Animation entrée en stagger */
+        opacity: 0;
+        transform: translateX(-12px);
+        transition:
+          opacity .35s ease,
+          transform .35s cubic-bezier(.4,0,.2,1),
+          color .2s ease !important;
+      }
+      /* Stagger sur les liens (appliqué via JS) */
+      .nav-links.open a { opacity: 1 !important; transform: translateX(0) !important; }
+      .nav-links.open a:nth-child(1) { transition-delay: .06s !important; }
+      .nav-links.open a:nth-child(2) { transition-delay: .12s !important; }
+      .nav-links.open a:nth-child(3) { transition-delay: .18s !important; }
+      .nav-links.open a:nth-child(4) { transition-delay: .24s !important; }
+
+      /* Numéro ordinal */
+      .nav-links a::before {
+        content: attr(data-num) !important;
+        font-family: 'DM Sans', system-ui, sans-serif !important;
+        font-size: 9px !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        letter-spacing: 2px !important;
+        color: var(--gold) !important;
+        opacity: .7 !important;
+        flex-shrink: 0 !important;
+        width: 28px !important;
+        margin-right: 16px !important;
+        /* Reset tout pseudo-élément hérité */
+        background: none !important;
+        height: auto !important;
+        position: static !important;
+        top: auto !important; bottom: auto !important;
+        left: auto !important; right: auto !important;
+        transform: none !important;
+        display: block !important;
+      }
+
+      /* Trait doré glissant — remplace la flèche statique */
+      .nav-links a::after {
+        content: '' !important;
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 28px !important;
+        right: 28px !important;
+        height: 1px !important;
+        background: linear-gradient(to right, var(--gold), transparent) !important;
+        opacity: 0 !important;
+        transform: scaleX(0) !important;
+        transform-origin: left !important;
+        transition: opacity .2s, transform .3s cubic-bezier(.4,0,.2,1) !important;
+        /* Reset */
+        top: auto !important;
+        width: auto !important;
+        border-radius: 0 !important;
+      }
+      .nav-links a:active::after,
+      .nav-links a:focus-visible::after {
+        opacity: 1 !important;
+        transform: scaleX(1) !important;
+      }
+
+      /* Fond subtil au tap */
+      .nav-links a:active {
+        color: var(--ink) !important;
+        background: rgba(189,103,69,.05) !important;
+      }
+
+      /* Séparateur entre liens : un point doré centré */
+      .nav-link-sep {
+        display: block;
+        width: 4px; height: 4px;
+        border-radius: 50%;
+        background: var(--gold);
+        opacity: .2;
+        margin: 0 auto;
+        flex-shrink: 0;
+      }
+
+      /* ─────────────────────────────────────────
+         TABS — sélecteur à encre avec curseur glissant
+      ───────────────────────────────────────── */
+      .tabs {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        gap: 0 !important;
+        border: none !important;
+        border-bottom: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        margin-bottom: 32px !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      /* Ligne verticale à gauche */
+      .tabs::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important; bottom: 0 !important; left: 0 !important;
+        width: 1px !important;
+        background: linear-gradient(to bottom, var(--gold), transparent) !important;
+        opacity: .3 !important;
+      }
+
+      /* Curseur glissant doré */
+      .tabs-cursor {
+        position: absolute;
+        left: 0;
+        width: 2px;
+        background: var(--gold);
+        border-radius: 1px;
+        transition: top .3s cubic-bezier(.4,0,.2,1), height .3s cubic-bezier(.4,0,.2,1);
+        z-index: 2;
+        box-shadow: 2px 0 12px rgba(189,103,69,.35);
+      }
+
+      .tab {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 14px 20px !important;
+        min-height: 52px !important;
+        border: none !important;
+        border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        background: transparent !important;
+        /* Typographie */
+        font-family: 'DM Sans', system-ui, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 400 !important;
+        letter-spacing: 1.8px !important;
+        text-transform: uppercase !important;
+        line-height: 1.45 !important;
+        color: var(--ink-muted) !important;
+        transition: color .25s ease, padding-left .25s cubic-bezier(.4,0,.2,1) !important;
+      }
+      .tab.active {
+        color: var(--ink) !important;
+        font-weight: 500 !important;
+        padding-left: 28px !important;
+        background: transparent !important;
+        border-left: none !important;
+      }
+      .tab:not(.active):active {
+        color: var(--ink-soft) !important;
+      }
+
+      /* ── Layout général ── */
+      .hero { padding: 40px 20px 48px; }
+      .hero h1 { font-size: 40px; }
+      .container { padding: 0 20px; }
+      .section { padding: 64px 0; }
+      .cards-grid { grid-template-columns: 1fr; gap: 16px; }
+      .timeline { padding-left: 24px; }
+      .timeline-text { padding: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-inner { padding: 0 20px; }
+      footer { padding: 24px 20px; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+      .btn-primary, .btn-outline, .btn-card, .btn-submit { min-height: 44px; -webkit-tap-highlight-color: transparent; }
+      .form-group input, .form-group textarea { font-size: 16px; }
+    }
+
+    /* =============================================
+       OPTIMISATIONS MOBILE PERFORMANCE
+    ============================================= */
+    @media (hover: none) and (pointer: coarse) {
+      /* GPU layer pour la barre de scan */
+      .scan-vbeam {
+        will-change: left, opacity;
+        contain: layout style;
+      }
+
+      /* Éviter les repaints inutiles sur les cartes */
+      .card, .num-card, .timeline-card {
+        will-change: auto;
+        transform: none !important;
+        box-shadow: var(--shadow-card) !important;
+      }
+
+      /* Désactiver les effets hover coûteux sur mobile */
+      .card::after { display: none; }
+
+      /* Taille de texte stable — empêche iOS de grossir le texte */
+      body {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+      /* Scroll fluide natif */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Supprimer l'underline doré au hover sur headings (inutile sur tactile) */
+      h1 span[aria-hidden], h2 span[aria-hidden], h3 span[aria-hidden] {
+        display: none !important;
+      }
+
+      /* Cacher le curseur custom sur tactile */
+      .cursor-dot, .cursor-ring { display: none !important; }
+
+      /* Désactiver l'effet répulsion sur tactile */
+      .rchar { transform: none !important; }
+
+      /* Transition opacity désactivée sur les lettres du scan :
+         la sync barre ↔ font doit être instantanée, pas interpolée */
+      .hero-desc .sl-ms,
+      .hero-desc .sl-nu {
+        transition: none !important;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+    }
+
+    .hero-quote {
+  display: none;
+}
+
+.hero-manifest {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0;
+  padding: 8px 2px;
+}
+
+.hero-manifest-body {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  gap: 20px;
+  align-items: start;
+}
+
+.hero-manifest-text {
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 1.9vw, 24px);
+  line-height: 1.42;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.1px;
+}
+
+.hero-manifest-text .underline-gold {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.hero-manifest-subtext {
+  font-family: var(--font-serif);
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gold-line);
+}
+
+.hero-manifest-terms {
+  border-left: 1px solid var(--gold-line);
+  padding-left: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 3px;
+}
+
+.hero-manifest-terms-label {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 2px;
+}
+
+.hero-manifest-term {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  cursor: default;
+  position: relative;
+  transition: color .25s, letter-spacing .25s;
+  padding-right: 2px;
+  user-select: none;
+}
+
+.hero-manifest-term::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--gold);
+  transition: right .35s cubic-bezier(.4,0,.2,1);
+}
+
+.hero-manifest-term:hover,
+.hero-manifest-term.active {
+  color: var(--ink);
+  letter-spacing: 2px;
+}
+
+.hero-manifest-term:hover::after,
+.hero-manifest-term.active::after {
+  right: 0;
+}
+
+/* Conteneur de texte — superposition des calques */
+.hero-manifest-textbox {
+  position: relative;
+  /* hauteur fixe = place pour la plus grande question */
+  height: 5.8em;
+  overflow: hidden;
+}
+
+/* Bloque les transitions au chargement — JS retire cette classe au 1er survol */
+.hero-manifest-textbox.no-transition * {
+  transition: none !important;
+}
+
+.hero-manifest-layer {
+  font-family: var(--font-serif);
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.1px;
+  transition: opacity .38s ease, transform .38s ease;
+}
+
+.hero-manifest-layer.layer-question {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.hero-manifest-layer.layer-question.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hero-manifest-layer.layer-question.leaving {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.hero-manifest-layer .underline-gold {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.hero-manifest-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 16px;
+  margin-top: 20px;
+  background: rgba(245,240,232,.6);
+  border: 1px solid var(--gold-line);
+  border-radius: 2px;
+}
+
+.hero-manifest-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hero-manifest-name {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.hero-manifest-role {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  line-height: 1.55;
+  color: var(--ink-muted);
+  letter-spacing: .2px;
+}
+
+.hero-manifest-mail {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: .3px;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-line);
+  white-space: nowrap;
+}
+
+.hero-manifest-mail:hover {
+  color: var(--gold-l);
+  border-bottom-color: var(--gold);
+}
+  </style>
+</head>
+<body>
+  <!-- SVG Filtre déformation contours "D'encre" -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="encre-distort" x="-8%" y="-8%" width="116%" height="116%"
+              color-interpolation-filters="sRGB">
+        <!-- Bruit fractal — simule l'irrégularité de l'impression typographique -->
+        <feTurbulence type="fractalNoise"
+                      baseFrequency="0.065 0.045"
+                      numOctaves="4"
+                      seed="3"
+                      result="noise"/>
+        <!-- Déplacement des contours : scale identique au projet L'Humanité -->
+        <feDisplacementMap in="SourceGraphic"
+                           in2="noise"
+                           scale="2.5"
+                           xChannelSelector="R"
+                           yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- Overlay sombre derrière le drawer -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <!-- Menu mobile — ancré sous la navbar via CSS top: var(--nav-h) -->
+  <div class="nav-links" id="navLinks" role="navigation" aria-label="Menu mobile">
+    <div class="nav-links-inner">
+      <a href="#restauration" data-num="01">Restauration</a>
+      <span class="nav-link-sep" aria-hidden="true"></span>
+      <a href="#numerique" data-num="02">Numérique</a>
+      <span class="nav-link-sep" aria-hidden="true"></span>
+      <a href="#recherche" data-num="03">Recherche</a>
+      <span class="nav-link-sep" aria-hidden="true"></span>
+      <a href="#contact" data-num="04">Contact</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav role="navigation" aria-label="Navigation principale">
+    <div class="nav-inner">
+      <a href="#" class="brand" aria-label="Victor Mulé — Accueil">
+        <div class="brand-monogram" aria-hidden="true">VM</div>
+        <div class="brand-text">
+          Victor Mulé
+          <span>Conservation · Patrimoine</span>
+        </div>
+      </a>
+      <div class="nav-brand-links" id="navDesktopLinks">
+        <a href="#restauration">Restauration</a>
+        <a href="#numerique">Numérique</a>
+        <a href="#recherche">Recherche</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero container" id="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Portfolio · Master Conservation-Restauration</div>
+      <br>
+      <h1><span class="h1-encre">D'encre</span><span class="h1-light">et de pixel</span></h1>
+      <p class="hero-tagline">Conservation et patrimoine à l'ère du numérique</p>
+      <p class="hero-desc">
+        Étudiant en master de conservation-restauration des biens culturels à l'ESAA (Avignon), 
+        je me spécialise dans le traitement et la préservation des ouvrages littéraires, des archives 
+        et du patrimoine numérique. Ce portfolio présente une sélection de mes travaux de 
+        conservation-restauration ainsi que mes recherches autour de la place du numérique dans 
+        la sauvegarde du patrimoine.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">Me contacter</a>
+      </div>
+    </div>
+    <div class="hero-right" aria-hidden="true">
+      <div class="hero-ornament">
+        <div class="hero-ornament-frame"></div>
+        <div class="hero-ornament-inner">
+<blockquote class="hero-manifest">
+  <div class="hero-manifest-body">
+    <div>
+      <div class="hero-manifest-textbox" id="manifestTextbox">
+
+        <!-- Calque Matière -->
+        <p class="hero-manifest-layer layer-question" id="manifestQ1" aria-live="polite">
+          Le passage au numérique est-il une conservation ou une <span class="underline-gold">transformation irréversible</span>&nbsp;?
+        </p>
+
+        <!-- Calque Mémoire -->
+        <p class="hero-manifest-layer layer-question" id="manifestQ2" aria-live="polite">
+          Le partage numérique dissout-il la notion d'<span class="underline-gold">original</span>&nbsp;?
+        </p>
+
+        <!-- Calque Transmission -->
+        <p class="hero-manifest-layer layer-question" id="manifestQ3" aria-live="polite">
+          La conservation peut-elle suivre le rythme de l'<span class="underline-gold">obsolescence numérique</span>&nbsp;?
+        </p>
+
+      </div>
+
+      <p class="hero-manifest-subtext">
+        Conserver, c'est descendre dans les strates&nbsp;—<br>
+        format, codec, protocole&nbsp;—<br>
+        avant que l'accès soit perdu.
+      </p>
+    </div>
+    <div class="hero-manifest-terms" aria-label="Axes de travail">
+      <div class="hero-manifest-terms-label">Axes</div>
+      <span class="hero-manifest-term" data-q="manifestQ1">Matière</span>
+      <span class="hero-manifest-term" data-q="manifestQ2">Mémoire</span>
+      <span class="hero-manifest-term" data-q="manifestQ3">Transmission</span>
+    </div>
+  </div>
+
+  <footer class="hero-manifest-footer">
+    <div class="hero-manifest-identity">
+      <span class="hero-manifest-name">Victor Mulé</span>
+      <span class="hero-manifest-role">Conservation-restauration du livre, des archives &amp; du patrimoine numérique</span>
+    </div>
+    <a class="hero-manifest-mail" href="mailto:victor.mule@esaavignon.fr">
+      victor.mule@esaavignon.fr
+    </a>
+  </footer>
+</blockquote>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======= RESTAURATION ======= -->
+    <section id="restauration" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="section-label">I — Restauration-conservation</div>
+            <h2 class="section-title">Études &amp; interventions<br>sur les <em>collections patrimoniales</em></h2>
+          </div>
+          <p class="section-lead">Traitements appliqués aux livres, archives et objets des réserves précieuses.</p>
+        </div>
+
+        <!-- Onglets -->
+        <div class="tabs reveal" role="tablist" aria-label="Filtrer par école">
+          <button class="tab active" data-target="general" role="tab" aria-selected="true">Tout</button>
+          <button class="tab" data-target="avignon" role="tab" aria-selected="false">ESAA Avignon — France</button>
+          <button class="tab" data-target="cambre" role="tab" aria-selected="false">ENSAV La Cambre — Belgique</button>
+        </div>
+
+        <!-- Panels de restauration — générés par JS depuis RESTORATION_CARDS -->
+        <div id="general" class="cards-grid panel reveal-stagger"></div>
+        <div id="avignon" class="cards-grid panel hidden reveal-stagger"></div>
+        <div id="cambre"  class="cards-grid panel hidden reveal-stagger"></div>
+      </div>
+    </section>
+
+    <!-- ======= NUMÉRIQUE ======= -->
+    <section id="numerique" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="section-label">II — Numérique</div>
+            <h2 class="section-title">Le numérique au service<br>de la <em>conservation</em></h2>
+          </div>
+          <p class="section-lead">Vers un patrimoine dématérialisé, interactif et accessible.</p>
+        </div>
+
+        <div class="num-grid reveal-stagger">
+          <article class="num-card">
+            <div class="num-card-img-wrap">
+              <img class="num-card-img" alt="Géométrique — Netlify" src="image/geometrie2.png" loading="lazy"/>
+              <div class="num-card-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="num-card-body">
+              <div class="num-card-kicker">ESAA Avignon · 2024–2025</div>
+              <h3 class="num-card-title">Boîte de géométrie descriptive, Méthode nouvelle (1873)</h3>
+              <p class="num-card-desc">Réflexion sur la manière de préserver la valeur pédagogique d'un objet qui n'est plus manipulable, mais qui servait autrefois à l'apprentissage de la géométrie.</p>
+              <a class="btn-primary" href="https://geometrique.netlify.app/" target="_blank" rel="noopener">
+                Ouvrir le site<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> (ouvre dans un nouvel onglet)</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M5 2h5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+          <article class="num-card">
+            <div class="num-card-img-wrap">
+              <img class="num-card-img" alt="Bréguet 19 — Constat 3D" src="image/constat3D.png" loading="lazy"/>
+              <div class="num-card-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="num-card-body">
+              <div class="num-card-kicker">ESAA Avignon · 2024–2025</div>
+              <h3 class="num-card-title">À bord du Breguet 19, le premier tour du monde en avion</h3>
+              <p class="num-card-desc">Projet de constat d'état en trois dimensions (vision Mushroom Alice), visant à annoter les déformations et déchirures présentes sur le gouvernail du Bréguet 19.</p>
+              <a class="btn-primary" href="https://breguet.netlify.app/" target="_blank" rel="noopener">
+                Ouvrir le site<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> (ouvre dans un nouvel onglet)</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M5 2h5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+          <article class="num-card">
+            <div class="num-card-img-wrap">
+              <img class="num-card-img" alt="Amazonie — Quai Branly" src="image/Branly.png" loading="lazy"/>
+              <div class="num-card-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="num-card-body">
+              <div class="num-card-kicker">ESAA Avignon · 2024–2025</div>
+              <h3 class="num-card-title">Projet Amazonie : restitution des collections ethnographiques</h3>
+              <p class="num-card-desc">Ce travail vise à restituer l'esprit et la mémoire des objets ethnographiques brésiliens conservés au Musée du Quai Branly, en collaboration avec les communautés autochtones.</p>
+              <a class="btn-primary" href="https://amazonies.netlify.app/" target="_blank" rel="noopener">
+                Ouvrir le site<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> (ouvre dans un nouvel onglet)</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M5 2h5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+          <article class="num-card">
+            <div class="num-card-img-wrap">
+              <img class="num-card-img" alt="Triangle TEAS" src="image/triangle.png" loading="lazy"/>
+              <div class="num-card-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="num-card-body">
+              <div class="num-card-kicker">ESAA Avignon · 2024–2025</div>
+              <h3 class="num-card-title">Triangle de solubilité TEAS : solvants et polymères</h3>
+              <p class="num-card-desc">Triangle des solubilités de TEAS interactif qui calcule les paramètres de solubilité d'un mélange de solvants pour la conservation-restauration.</p>
+              <a class="btn-primary" href="https://teastriangle.netlify.app/" target="_blank" rel="noopener">
+                Ouvrir le site<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> (ouvre dans un nouvel onglet)</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M5 2h5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= RECHERCHE ======= -->
+    <section id="recherche" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="section-label">III — Recherche</div>
+            <h2 class="section-title">Stages, conférences<br>&amp; <em>publications</em></h2>
+          </div>
+          <p class="section-lead">Communications, journées d'étude et expériences professionnelles.</p>
+        </div>
+
+        <div class="tabs reveal" role="tablist" aria-label="Filtrer par type">
+          <button class="tab active" data-target="stages" role="tab" aria-selected="true">Stages</button>
+          <button class="tab" data-target="confs" role="tab" aria-selected="false">Conférences &amp; journées d'étude</button>
+          <button class="tab" data-target="articles" role="tab" aria-selected="false">Articles &amp; recherches</button>
+        </div>
+
+        <!-- STAGES -->
+        <div id="stages" class="panel">
+          <div class="timeline reveal">
+            <div class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <article class="timeline-card">
+                <div class="timeline-text">
+                  <div class="timeline-kicker">Stage · Avril 2025</div>
+                  <h3 class="timeline-title">Atelier François &amp; Marie Vinourd — Fondation Louis Jou, Les Baux-de-Provence</h3>
+                  <p class="timeline-desc">Stage en conservation-restauration livre &amp; papier : traitements de registres et manuscrits (désacidification, gommage, comblement de lacune, doublage, montages, couture). Atelier spécialisé dans les reliures du bas et haut Moyen-Âge.</p>
+                  <p class="timeline-contact">Contact : <a href="mailto:vinourd@gmail.com">vinourd@gmail.com</a> — 04 90 54 34 39</p>
+                </div>
+                <div class="timeline-media">
+                  <div class="carousel" aria-label="Diaporama stage Vinourd" id="vinourd-carousel">
+                    <div class="track" id="vinourd-track">
+                      <img src="image/vinourd-atelier.png" alt="Atelier Vinourd — vue d'ensemble">
+                      <img src="image/vinourd-stage-1.jpg" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-2.png" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-3.png" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-4.png" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-5.jpg" alt="Atelier Vinourd">
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONFÉRENCES -->
+        <div id="confs" class="panel hidden">
+          <div class="timeline reveal">
+            <div class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <article class="timeline-card">
+                <div class="timeline-text">
+                  <div class="timeline-kicker">Journée d'étude · Marseille — 13 juin 2025</div>
+                  <h3 class="timeline-title">La thermographie infrarouge appliquée à la conservation des biens culturels : théorie et pratique</h3>
+                  <p class="timeline-desc">Formation et démonstrations autour des applications de la thermographie infrarouge pour l'analyse et le suivi d'état des œuvres.</p>
+                  <p class="timeline-contact"><strong>CICRP</strong>, 21 rue Guibal, 13003 — Marseille.</p>
+                </div>
+                <div class="timeline-media">
+                  <img src="image/thermographie.png" alt="Thermographie infrarouge">
+                </div>
+              </article>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <article class="timeline-card">
+                <div class="timeline-text">
+                  <div class="timeline-kicker">Journées professionnelles · Paris — 17–18 mars 2025</div>
+                  <h3 class="timeline-title">Numérique et conservation-restauration : apports, objectifs et enjeux</h3>
+                  <p class="timeline-desc">Rencontres organisées par le Ministère de la Culture à l'Institut national du patrimoine, sur la thématique des usages du numérique en conservation-restauration, perspectives et retours d'expérience.</p>
+                  <p class="timeline-contact"><strong>INP</strong>, Galerie Colbert, 2 rue Vivienne — Paris.</p>
+                </div>
+                <div class="timeline-media">
+                  <img src="image/numerique.png" alt="Numérique et conservation">
+                </div>
+              </article>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <article class="timeline-card">
+                <div class="timeline-text">
+                  <div class="timeline-kicker">Workshop · Bruxelles — 4–7 novembre 2019</div>
+                  <h3 class="timeline-title">The aqueous environment and solvents for treatments on works of art on paper</h3>
+                  <p class="timeline-desc">Préparation et application de gel solvant pour le nettoyage et le traitement des œuvres d'art. Formation dispensée par Paolo Cremonesi (chimiste de la conservation) et Letizia Satto (restauratrice).</p>
+                  <p class="timeline-contact"><strong>ENSAV La Cambre</strong>, Abbaye de la Cambre — Bruxelles.</p>
+                </div>
+                <div class="timeline-media">
+                  <img src="image/cremonesi.png" alt="Workshop Cremonesi">
+                </div>
+              </article>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <article class="timeline-card">
+                <div class="timeline-text">
+                  <div class="timeline-kicker">Workshop · Arles — 19–24 novembre 2018</div>
+                  <h3 class="timeline-title">(BLOCK)CHAIN OF LOVE — PAMAL</h3>
+                  <p class="timeline-desc">Ce workshop explore le rôle de la blockchain dans la création et la conservation de l'art numérique, entre recherche, prototypes et expositions. Coordination Emmanuel Guez (PAMAL).</p>
+                  <p class="timeline-contact"><strong>Ancien Couvent Saint Césaire</strong>, Impasse de Mourgues — Arles.</p>
+                </div>
+                <div class="timeline-media">
+                  <img src="image/PAMAL.png" alt="Workshop PAMAL">
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- ARTICLES -->
+        <div id="articles" class="panel hidden">
+          <div class="reveal">
+            <article class="article-card">
+              <div class="article-card-body">
+                <div class="timeline-kicker">FUTURE TALKS 025 · Munich — Novembre 2025</div>
+                <h3 class="timeline-title">Les cristaux liquides, un matériau de l'art contemporain — enjeux pour la conservation-restauration du patrimoine</h3>
+                <p class="timeline-desc">Présentation d'un travail de recherche en cours lors de la conférence internationale Future Talks 025.</p>
+                <p class="timeline-contact" style="margin-bottom:24px;"><strong>Die Neue Sammlung : The Design Museum</strong>, Pinakothek der Moderne — Munich.</p>
+                <a class="btn-primary" href="PDF/CristalLiquide.pdf" target="_blank" rel="noopener">Voir le PDF<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> (ouvre dans un nouvel onglet)</span></a>
+              </div>
+              <div class="article-card-img">
+                <img src="image/Cristaux.png" alt="Exposé cristaux liquides">
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======= CONTACT ======= -->
+    <section id="contact" class="contact-section" aria-labelledby="contact-title">
+      <div class="contact-inner">
+        <div class="contact-left reveal">
+          <div class="section-label">IV — Contact</div>
+          <h2 class="contact-title" id="contact-title">Une question,<br>une <em>collaboration</em> ?</h2>
+          <p style="color:rgba(245,240,232,.6); font-size:15px; line-height:1.8;">Écrivez-moi pour toute proposition, question ou collaboration autour de la conservation-restauration et du patrimoine numérique.</p>
+          <div class="contact-info">
+            <div class="contact-info-item">
+              <span class="contact-info-label">Nom</span>
+              <span class="contact-info-value">Victor Mulé</span>
+            </div>
+            <div class="contact-divider"></div>
+            <div class="contact-info-item">
+              <span class="contact-info-label">Formation</span>
+              <span class="contact-info-value">Master — ESAA Avignon</span>
+            </div>
+            <div class="contact-divider"></div>
+            <div class="contact-info-item">
+              <span class="contact-info-label">Email</span>
+              <span class="contact-info-value"><a href="mailto:victor.mule@esaavignon.fr">victor.mule@esaavignon.fr</a></span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right reveal">
+          <form class="contact-form" action="mailto:victor.mule@esaavignon.fr" method="post" enctype="text/plain">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Nom</label>
+                <input id="name" name="Nom" required placeholder="Votre nom"/>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="Email" type="email" required placeholder="vous@exemple.fr"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="msg">Message</label>
+              <textarea id="msg" name="Message" rows="5" required placeholder="Dites-moi tout…"></textarea>
+            </div>
+            <button class="btn-submit" type="submit">Envoyer le message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 — Victor Mulé</span>
+      <div class="footer-links">
+        <a href="#restauration">Restauration</a>
+        <a href="#numerique">Numérique</a>
+        <a href="#recherche">Recherche</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =============================================
+    // CUSTOM CURSOR — désactivé sur tactile
+    // =============================================
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+
+    // Détection tactile primaire
+    const isTouchPrimary = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    if (isTouchPrimary) {
+      // Masquer complètement le curseur custom sur mobile
+      dot.style.display  = 'none';
+      ring.style.display = 'none';
+    } else {
+      let mx = -100, my = -100, rx = -100, ry = -100;
+      let rafId;
+
+      document.addEventListener('pointermove', e => {
+        if (e.pointerType === 'touch') return;
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+        if (!rafId) rafId = requestAnimationFrame(animRing);
+      }, { passive: true });
+
+      function animRing() {
+        rafId = null;
+        rx += (mx - rx) * .14;
+        ry += (my - ry) * .14;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        if (Math.abs(mx - rx) > 0.5 || Math.abs(my - ry) > 0.5) {
+          rafId = requestAnimationFrame(animRing);
+        }
+      }
+
+      document.querySelectorAll('a, button, .card, .num-card, .timeline-card').forEach(el => {
+        el.addEventListener('pointerenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('pointerleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    }
+
+    // =============================================
+    // NAV MOBILE TOGGLE
+    // =============================================
+    const toggle   = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function openNav() {
+      navLinks.classList.add('open');
+      navOverlay.classList.add('visible');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Fermer le menu');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeNav() {
+      navLinks.classList.remove('open');
+      navOverlay.classList.remove('visible');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Ouvrir le menu');
+      document.body.style.overflow = '';
+    }
+
+    toggle.addEventListener('click', () => {
+      navLinks.classList.contains('open') ? closeNav() : openNav();
+    });
+
+    // Fermer au clic sur un lien
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+    // Fermer au clic sur l'overlay
+    navOverlay.addEventListener('click', closeNav);
+
+    // Fermer avec Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) closeNav();
+    });
+
+    // =============================================
+    // TABS (accessibles)
+    // =============================================
+    document.querySelectorAll('.section').forEach(section => {
+      const tabs   = Array.from(section.querySelectorAll('.tabs .tab'));
+      const panels = Array.from(section.querySelectorAll('.panel'));
+      if (!tabs.length || !panels.length) return;
+
+      tabs.forEach((tab, i) => {
+        const id = tab.dataset.target;
+        const panel = section.querySelector('#' + CSS.escape(id));
+        if (panel) {
+          tab.id = id + '-tab';
+          tab.setAttribute('aria-controls', id);
+          panel.setAttribute('role', 'tabpanel');
+          panel.setAttribute('aria-labelledby', tab.id);
+        }
+      });
+
+      const select = tab => {
+        tabs.forEach(t => {
+          t.classList.toggle('active', t === tab);
+          t.setAttribute('aria-selected', t === tab);
+          t.tabIndex = t === tab ? 0 : -1;
+        });
+        panels.forEach(p => p.classList.add('hidden'));
+        const id = tab.dataset.target;
+        const panel = section.querySelector('#' + CSS.escape(id));
+        if (panel) {
+          panel.classList.remove('hidden');
+          // Trigger reveal animation for newly shown panel
+          panel.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+            el.classList.remove('is-visible');
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                el.classList.add('is-visible');
+              });
+            });
+          });
+          // Carousel control
+          if (window._vinourdCarousel) {
+            if (id === 'stages') window._vinourdCarousel.resetAndPlay();
+            else window._vinourdCarousel.pause();
+          }
+        }
+      };
+
+      tabs.forEach(tab => tab.addEventListener('click', () => select(tab)));
+
+      section.addEventListener('keydown', e => {
+        const cur = document.activeElement;
+        if (!cur?.classList.contains('tab')) return;
+        const idx = tabs.indexOf(cur);
+        let next = idx;
+        if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        else return;
+        e.preventDefault();
+        tabs[next].focus();
+        select(tabs[next]);
+      });
+
+      // Init
+      const active = tabs.find(t => t.classList.contains('active')) || tabs[0];
+      select(active);
+    });
+
+    // =============================================
+    // RESTAURATION — données centralisées & rendu dynamique
+    // Supprime les 3 panels HTML dupliqués (≈ 400 lignes) au profit
+    // d'une source unique. Filtrage par école fait en JS.
+    // =============================================
+    (function initRestorationCards() {
+      const SVG_DL = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+
+      // Source de vérité unique pour toutes les cards de restauration
+      const CARDS = [
+        {
+          school: 'avignon',
+          kicker: 'ESAA Avignon · 2024–2025',
+          title: 'Le Monde à l\'envers, Documents (1993) — Sylvie Nayral',
+          img: 'image/DNA.png',
+          alt: 'Sylvie Nayral, Le Monde à l\'envers',
+          location: 'FRAC Occitanie Montpellier',
+          pdf: 'PDF/DNA.pdf',
+        },
+        {
+          school: 'avignon',
+          kicker: 'ESAA Avignon · 2024–2025',
+          title: 'Boîte de géométrie descriptive, Méthode nouvelle (1873) — A. Jullien',
+          img: 'image/Geometrie.png',
+          alt: 'Boîte de géométrie descriptive',
+          location: 'Bibliothèque-Musée Inguimbertine de Carpentras',
+          pdf: 'PDF/GEOMETRIE.pdf',
+        },
+        {
+          school: 'cambre',
+          kicker: 'ENSAV La Cambre · 2019–2020',
+          title: 'VESTA, sive Ant-Aristarchi Vindex (1634) — Liberti Fromondi',
+          img: 'image/Vesta.png',
+          alt: 'VESTA — Liberti Fromondi',
+          location: 'Bibliothèque de l\'Université de Mons',
+          pdf: 'PDF/VESTA.pdf',
+        },
+        {
+          school: 'cambre',
+          kicker: 'ENSAV La Cambre · 2018–2019',
+          title: 'Manuductio ad Logicam sive Dialectica (1678) — R.P. Phillipe du Trieu',
+          img: 'image/Manuductio.png',
+          alt: 'Manuductio ad Logicam',
+          location: 'Bibliothèque de l\'Université de Mons',
+          pdf: 'PDF/MANUDUCTIO.pdf',
+        },
+        {
+          school: 'cambre',
+          kicker: 'ENSAV La Cambre · 2018–2019',
+          title: 'Les États, Empires, Royaumes, Duchés &amp; Principautés du monde (1621) — Pierre d\'Avity',
+          img: 'image/Etat.png',
+          alt: 'Les États, Empires, Royaumes',
+          location: 'Bibliothèque de l\'Université de Mons',
+          pdf: 'PDF/EMPIRE.pdf',
+        },
+        {
+          school: 'cambre',
+          kicker: 'ENSAV La Cambre · 2018–2019',
+          title: 'Le Martyrologe Romain (1641) — Pape Grégoire XIII',
+          img: 'image/Martyrologue.png',
+          alt: 'Le Martyrologe Romain',
+          location: 'Bibliothèque de l\'Université de Mons',
+          pdf: 'PDF/MARTYROLOGE.pdf',
+        },
+        {
+          school: 'cambre',
+          kicker: 'ENSAV La Cambre · 2017–2018',
+          title: 'Anthologie des poètes belges (1918) — Louis Dumont-Wilden',
+          img: 'image/Anthologie.png',
+          alt: 'Anthologie des poètes belges',
+          location: 'Bibliothèque de l\'Université de Mons',
+          pdf: 'PDF/ANTHOLOGIE.pdf',
+        },
+        {
+          school: 'cambre',
+          kicker: 'ENSAV La Cambre · 2017–2018',
+          title: 'Dossier Prométhée (1899) — Iwan Gilkin',
+          img: 'image/Promethee.png',
+          alt: 'Dossier Prométhée — Iwan Gilkin',
+          location: 'Bibliothèque de l\'Université de Mons',
+          pdf: 'PDF/PROMETHE.pdf',
+        },
+      ];
+
+      // Extrait l'année de fin (ou de début) pour le tri
+      const getYear = kicker => {
+        const m = kicker.match(/(19|20)\d{2}(?:\s*[–-]\s*((19|20)\d{2}))?/);
+        if (!m) return -Infinity;
+        return m[2] ? parseInt(m[2]) : parseInt(m[0]);
+      };
+
+      const buildCard = c => {
+        const art = document.createElement('article');
+        art.className = 'card';
+        art.innerHTML = `
+          <img class="card-img" alt="${c.alt}" src="${c.img}" loading="lazy" width="400" height="220"/>
+          <div class="card-body">
+            <div class="card-kicker">${c.kicker}</div>
+            <h3 class="card-title">${c.title}</h3>
+            <div class="card-footer">
+              <span class="card-location">${c.location}</span>
+              <a class="btn-card" href="${c.pdf}" target="_blank" rel="noopener">
+                ${SVG_DL}
+                PDF<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> (ouvre dans un nouvel onglet)</span>
+              </a>
+            </div>
+          </div>`;
+        return art;
+      };
+
+      const panelGeneral = document.getElementById('general');
+      const panelAvignon = document.getElementById('avignon');
+      const panelCambre  = document.getElementById('cambre');
+
+      if (!panelGeneral) return;
+
+      // Tri décroissant par année
+      const sorted = [...CARDS].sort((a, b) => getYear(b.kicker) - getYear(a.kicker));
+
+      sorted.forEach(c => {
+        panelGeneral.appendChild(buildCard(c));
+        if (c.school === 'avignon') panelAvignon.appendChild(buildCard(c));
+        if (c.school === 'cambre')  panelCambre.appendChild(buildCard(c));
+      });
+    })();
+
+    // =============================================
+    // TABS CURSOR GLISSANT (mobile uniquement)
+    // =============================================
+    (function initTabsCursor() {
+      if (!window.matchMedia('(max-width: 640px)').matches) return;
+
+      document.querySelectorAll('.tabs').forEach(tablist => {
+        // Créer le curseur
+        const cursor = document.createElement('span');
+        cursor.className = 'tabs-cursor';
+        tablist.insertBefore(cursor, tablist.firstChild);
+
+        function moveCursor(activeTab) {
+          if (!activeTab) return;
+          cursor.style.top    = activeTab.offsetTop + 'px';
+          cursor.style.height = activeTab.offsetHeight + 'px';
+        }
+
+        // Init
+        const active = tablist.querySelector('.tab.active');
+        // Premier positionnement sans transition
+        cursor.style.transition = 'none';
+        moveCursor(active);
+        // Réactiver la transition au prochain frame
+        requestAnimationFrame(() => {
+          cursor.style.transition = '';
+        });
+
+        // Suivre les clics
+        tablist.addEventListener('click', e => {
+          const tab = e.target.closest('.tab');
+          if (tab) requestAnimationFrame(() => moveCursor(tab));
+        });
+
+        // Suivre aussi la navigation clavier
+        tablist.addEventListener('keydown', () => {
+          requestAnimationFrame(() => {
+            moveCursor(tablist.querySelector('.tab.active'));
+          });
+        });
+
+        // Recalcul au resize
+        window.addEventListener('resize', () => {
+          cursor.style.transition = 'none';
+          moveCursor(tablist.querySelector('.tab.active'));
+          requestAnimationFrame(() => { cursor.style.transition = ''; });
+        }, { passive: true });
+      });
+    })();
+
+
+    // === D'ENCRE — impression typographique lettre par lettre ===
+    (function initEncreLetters() {
+      const el = document.querySelector('.h1-encre');
+      if (!el) return;
+
+      const TEXT = "D’encre";
+
+      // Accessibilité
+      el.setAttribute('aria-label', "D’encre");
+      el.innerHTML = '';
+
+      // Créer les spans — couleur var(--ink) héritée, toujours visible
+      const spans = Array.from(TEXT).map(ch => {
+        const s = document.createElement('span');
+        s.className  = 'encre-char rchar';
+        s.ariaHidden = 'true';
+        s.textContent = ch;
+        el.appendChild(s);
+        return s;
+      });
+
+      // Vérifier si l'image TitreBg2.png existe et charge correctement
+      // Si oui → activer la texture (background-clip:text)
+      // Si non → le texte reste visible en couleur encre (var(--ink))
+      const testImg = new Image();
+      testImg.onload = () => el.classList.add('texture-ready');
+      testImg.onerror = () => {
+        // Image absente : appliquer une couleur de substitution
+        el.style.color = 'var(--ink)';
+      };
+      testImg.src = 'image/TitreBg2.png';
+
+      // Mélanger l'ordre (comme "L'Humanité")
+      const ordre = spans
+        .map(s => ({ s, r: Math.random() }))
+        .sort((a, b) => a.r - b.r)
+        .map(o => o.s);
+
+      // Déposer chaque lettre avec délai aléatoire (60–200ms)
+      let cumul = 80;
+      ordre.forEach(s => {
+        const delai = cumul;
+        setTimeout(() => s.classList.add('inked'), delai);
+        cumul += 60 + Math.random() * 140;
+      });
+
+      // Rebuild cache répulsion
+      setTimeout(() => window.dispatchEvent(new Event('resize')), cumul + 400);
+    })();
+
+
+
+
+    // =============================================
+    // SCROLL REVEAL (IntersectionObserver)
+    // =============================================
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => revealObs.observe(el));
+
+    // =============================================
+    // CAROUSEL VINOURD
+    // =============================================
+    (function initCarousel() {
+      const root  = document.getElementById('vinourd-carousel');
+      const track = document.getElementById('vinourd-track');
+      if (!root || !track) return;
+
+      const firstClone = track.children[0]?.cloneNode(true);
+      if (firstClone) track.appendChild(firstClone);
+
+      const total = track.children.length;
+      let i = 0, timer = null;
+
+      const go = n => {
+        i = n;
+        track.style.transition = 'transform .6s cubic-bezier(.4,0,.2,1)';
+        track.style.transform  = `translateX(${-100 * i}%)`;
+      };
+
+      const pause = () => { clearInterval(timer); timer = null; };
+      const play  = () => { if (!timer) timer = setInterval(() => go(i + 1), 2800); };
+
+      const resetAndPlay = () => {
+        pause(); i = 0;
+        track.style.transition = 'none';
+        track.style.transform  = 'translateX(0)';
+        void track.offsetWidth;
+        track.style.transition = 'transform .6s cubic-bezier(.4,0,.2,1)';
+        play();
+      };
+
+      track.addEventListener('transitionend', () => {
+        if (i === total - 1) {
+          track.style.transition = 'none';
+          track.style.transform  = 'translateX(0)';
+          i = 0;
+          void track.offsetWidth;
+          track.style.transition = 'transform .6s cubic-bezier(.4,0,.2,1)';
+        }
+      });
+
+      root.addEventListener('mouseenter', pause);
+      root.addEventListener('mouseleave', play);
+      document.addEventListener('visibilitychange', () => document.hidden ? pause() : play());
+
+      root.tabIndex = 0;
+      root.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') { pause(); go((i + 1) % (total - 1)); }
+        else if (e.key === 'ArrowLeft') { pause(); go(Math.max(0, i - 1)); }
+      });
+
+      play();
+      window._vinourdCarousel = { pause, play, resetAndPlay };
+    })();
+
+    // =============================================
+    // SMOOTH GOLD UNDERLINE EFFECT (subtil)
+    // Dessine un trait doré qui suit le curseur sous les titres au hover
+    // =============================================
+    (function initGoldUnderline() {
+      // Inutile sur tactile
+      if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
+      // On marque les headings principaux
+      document.querySelectorAll('h1, h2, h3').forEach(h => {
+        h.style.position = 'relative';
+        h.style.display = 'inline';
+        const line = document.createElement('span');
+        line.setAttribute('aria-hidden', 'true');
+        line.style.cssText = `
+          position:absolute;
+          bottom:-3px; left:0;
+          height:1px;
+          width:0%;
+          background:linear-gradient(90deg, var(--gold), transparent);
+          transition:width .5s cubic-bezier(.4,0,.2,1);
+          pointer-events:none;
+          border-radius:1px;
+        `;
+        h.appendChild(line);
+        h.addEventListener('mouseenter', () => line.style.width = '100%');
+        h.addEventListener('mouseleave', () => line.style.width = '0%');
+      });
+    })();
+
+    // =============================================
+    // EFFET RÉPULSION — uniquement h1 + .hero-desc
+    // Léger, fluide, lettre par lettre
+    // =============================================
+    (function initRepulsion() {
+      // Inutile et coûteux sur mobile
+      if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const RADIUS = 100;   // px — zone d'influence
+      const AMP_H1 = 14;    // amplitude max pour le h1
+      const AMP_P  = 7;     // amplitude max pour le paragraphe
+      const EASE   = .18;   // inertie de retour (0=rigide, 1=instantané)
+
+      // Cibles : h1-encre + h1-light
+      // Pour h1-encre : les .encre-char sont des inline-block individuels,
+      // background-clip:text est sur le parent — le repaint du bg suit le scroll,
+      // pas le transform des enfants → effet intentionnel (l'image glisse derrière)
+      const targets = [
+        { el: document.querySelector('.hero h1 .h1-encre'),  amp: AMP_H1 },
+        { el: document.querySelector('.hero h1 .h1-light'),  amp: AMP_H1 * .7 },
+      ].filter(t => t.el);
+
+      // Wrap chaque caractère non-blanc en <span>, les espaces restent en texte
+      function wrapChars(el) {
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+          acceptNode: n => (n.nodeValue && n.nodeValue.length) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+        });
+        const texts = [];
+        while (walker.nextNode()) texts.push(walker.currentNode);
+        texts.forEach(tn => {
+          const frag = document.createDocumentFragment();
+          for (const ch of tn.nodeValue) {
+            if (ch === ' ' || ch === '\u00A0' || ch === '\n') {
+              // Espace : nœud texte brut — préserve le rendu naturel
+              frag.appendChild(document.createTextNode(ch));
+            } else {
+              const s = document.createElement('span');
+              s.className = 'rchar';
+              s.textContent = ch;
+              s.style.cssText = 'display:inline-block; will-change:transform;';
+              frag.appendChild(s);
+            }
+          }
+          tn.parentNode.replaceChild(frag, tn);
+        });
+      }
+
+      targets.forEach(t => wrapChars(t.el));
+
+      // Cache des positions (rebuilt au resize/scroll)
+      let cache = []; // { el, amp, cx, cy, ox, oy }
+      let dirty = true;
+
+      function buildCache() {
+        cache = [];
+        targets.forEach(({ el, amp }) => {
+          el.querySelectorAll('.rchar').forEach(span => {
+            const r = span.getBoundingClientRect();
+            cache.push({
+              el: span, amp,
+              cx: r.left + r.width  / 2,
+              cy: r.top  + r.height / 2,
+              ox: 0, oy: 0  // offset courant (pour lerp)
+            });
+          });
+        });
+        dirty = false;
+      }
+
+      let rebuildTick = false;
+      const scheduleRebuild = () => {
+        if (rebuildTick) return;
+        rebuildTick = true;
+        requestAnimationFrame(() => { buildCache(); rebuildTick = false; });
+      };
+
+      window.addEventListener('resize', scheduleRebuild, { passive: true });
+      window.addEventListener('scroll', scheduleRebuild, { passive: true });
+
+      // Attendre que la police soit chargée pour avoir les bons rects
+      document.fonts.ready.then(() => buildCache());
+
+      // Pointer
+      let px = -9999, py = -9999;
+      let animActive = false;
+
+      document.addEventListener('pointermove', e => {
+        px = e.clientX; py = e.clientY;
+        if (!animActive) { animActive = true; requestAnimationFrame(tick); }
+      }, { passive: true });
+
+      function tick() {
+        animActive = false;
+        // Pas de buildCache() ici : scheduleRebuild() est déjà debounced par rAF
+
+        let anyMoving = false;
+
+        for (const c of cache) {
+          const dx = px - c.cx;
+          const dy = py - c.cy;
+          const dist = Math.hypot(dx, dy) || 1;
+
+          // Cible : répulsion si dans le rayon, sinon 0
+          let tx = 0, ty = 0;
+          if (dist < RADIUS) {
+            const force = (1 - dist / RADIUS) * c.amp;
+            tx = -(dx / dist) * force;
+            ty = -(dy / dist) * force;
+          }
+
+          // Lerp vers la cible
+          c.ox += (tx - c.ox) * EASE;
+          c.oy += (ty - c.oy) * EASE;
+
+          if (Math.abs(c.ox) > .05 || Math.abs(c.oy) > .05) {
+            c.el.style.transform = `translate(${c.ox.toFixed(2)}px, ${c.oy.toFixed(2)}px)`;
+            anyMoving = true;
+          } else {
+            c.el.style.transform = '';
+          }
+        }
+
+        if (anyMoving) { animActive = true; requestAnimationFrame(tick); }
+      }
+
+    })();
+
+    // =============================================
+    // EFFET SCAN VERTICAL — lettre par lettre, zéro décalage
+    // • Desktop : suit la souris (pointermove)
+    // • Mobile  : animation automatique gauche→droite en boucle
+    // =============================================
+    (function initScan() {
+      const p = document.querySelector('.hero-desc');
+      if (!p || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      // Détection tactile : si l'appareil est touch-first, on délègue à CSS
+      const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+      const SIZE_MS = 16;
+      const SIZE_NU = 15;
+      const LINE_H  = 1.9;
+      const FONT_MS = `italic ${SIZE_MS}px 'IM Fell English', Georgia, serif`;
+      const FONT_NU = `300 ${SIZE_NU}px 'DM Sans', system-ui, sans-serif`;
+
+      // Canvas de mesure
+      const cv = document.createElement('canvas');
+      const ctx = cv.getContext('2d');
+      const measure = (ch, font) => { ctx.font = font; return ctx.measureText(ch).width; };
+
+      const lineH  = SIZE_MS * LINE_H;
+      const spaceW = Math.max(measure(' ', FONT_MS), measure(' ', FONT_NU));
+
+      // Texte brut → mots
+      const raw   = p.innerText.replace(/\s+/g, ' ').trim();
+      const words = raw.split(' ');
+      p.innerHTML = '';
+
+      // Barre verticale
+      const beam = document.createElement('span');
+      beam.className = 'scan-vbeam';
+      beam.setAttribute('aria-hidden', 'true');
+      p.appendChild(beam);
+
+      // Texte accessible pour les AT
+      const a11y = document.createElement('span');
+      a11y.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;';
+      a11y.textContent = raw;
+      p.appendChild(a11y);
+
+      const allBoxes = [];
+
+      words.forEach((word, wi) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'sw';
+        wordSpan.style.cssText = 'display:inline-block; white-space:nowrap; vertical-align:baseline;';
+        wordSpan.setAttribute('aria-hidden', 'true');
+
+        for (const ch of word) {
+          const w = Math.max(measure(ch, FONT_MS), measure(ch, FONT_NU)) + 0.5;
+          const box = document.createElement('span');
+          box.className = 'sl';
+          box.style.width  = w + 'px';
+          box.style.height = lineH + 'px';
+          box.setAttribute('aria-hidden', 'true');
+
+          const ms = document.createElement('span');
+          ms.className = 'sl-ms';
+          ms.textContent = ch;
+
+          const nu = document.createElement('span');
+          nu.className = 'sl-nu';
+          nu.textContent = ch;
+
+          box.appendChild(ms);
+          box.appendChild(nu);
+          wordSpan.appendChild(box);
+          allBoxes.push(box);
+        }
+
+        p.appendChild(wordSpan);
+
+        if (wi < words.length - 1) {
+          const sp = document.createElement('span');
+          sp.className = 'ss';
+          sp.style.cssText = `display:inline-block; width:${spaceW}px; height:${lineH}px; vertical-align:baseline;`;
+          sp.setAttribute('aria-hidden', 'true');
+          p.appendChild(sp);
+        }
+      });
+
+      // ── Cache des centres X (viewport) ──
+      let centers = new Float32Array(allBoxes.length);
+      let dirty = true;
+
+      function buildCache() {
+        for (let i = 0; i < allBoxes.length; i++) {
+          const r = allBoxes[i].getBoundingClientRect();
+          centers[i] = r.left + r.width * 0.5;
+        }
+        dirty = false;
+      }
+
+      // Marge en px de chaque côté du texte
+      const MARGIN = 32;
+
+      function getLimits() {
+        const r = p.getBoundingClientRect();
+        return { left: r.left - MARGIN, right: r.right + MARGIN, pLeft: r.left };
+      }
+
+      function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+      function applyBeam(x) {
+        const { left, right, pLeft } = getLimits();
+        const cx = clamp(x, left, right);
+        beam.style.left = (cx - pLeft) + 'px';
+        for (let i = 0; i < allBoxes.length; i++) {
+          const revealed = centers[i] <= cx;
+          const cl = allBoxes[i].classList;
+          if (revealed !== cl.contains('revealed')) {
+            cl.toggle('revealed', revealed);
+          }
+        }
+      }
+
+      if (isTouchDevice) {
+        // ── MODE MOBILE : scan automatique — barre et lettres 100% synchronisés via rAF ──
+        //
+        // Principe : chaque frame, on calcule la position X de la barre (interpolation linéaire
+        // sur toute la largeur du paragraphe), on la positionne via style.left,
+        // ET on appelle applyBeam(x) qui révèle/masque les lettres selon leur position.
+        // Résultat : le changement de font est parfaitement aligné avec la barre.
+        //
+        // Phases :
+        //   [scan]  → barre va de left à right en SCAN_DURATION ms
+        //   [hold]  → barre reste à droite (tout révélé) pendant HOLD_MS ms
+        //   [fade]  → barre disparaît, lettres reviennent en manuscrit sur FADE_MS ms
+        //   [gap]   → pause noire avant le prochain passage sur GAP_MS ms
+
+        const SCAN_DURATION = 7000; // ms par passage
+        const FADE_MS       = 800;  // fondu de la barre à l'arrivée
+        const GAP_MS        = 600;  // pause avant de repartir
+
+        let phase      = 'gap';  // 'scan' | 'fadeout' | 'gap'
+        let phaseStart = null;
+        let scanRaf    = null;
+        // direction du scan courant : true = révèle numérique, false = révèle manuscrit
+        let revealNumeric = true;
+
+        function lerp(a, b, t) { return a + (b - a) * t; }
+
+        function startScan() {
+          document.fonts.ready.then(() => {
+            dirty = true;
+            buildCache();
+            // État initial : tout en manuscrit
+            allBoxes.forEach(b => b.classList.remove('revealed'));
+            beam.style.opacity = '0';
+            revealNumeric = true; // le 1er passage révèle le numérique
+            phaseStart = null;
+            phase = 'gap';
+            scanRaf = requestAnimationFrame(scanTick);
+          });
+        }
+
+        function scanTick(ts) {
+          scanRaf = null;
+          if (!phaseStart) phaseStart = ts;
+          const elapsed = ts - phaseStart;
+
+          if (phase === 'scan') {
+            const r = p.getBoundingClientRect();
+            const t = Math.min(elapsed / SCAN_DURATION, 1);
+            const x = lerp(r.left, r.right, t);
+
+            beam.style.opacity = '1';
+
+            const r2 = p.getBoundingClientRect();
+            beam.style.left = (x - r2.left) + 'px';
+
+            for (let i = 0; i < allBoxes.length; i++) {
+              if (centers[i] <= x) {
+                allBoxes[i].classList.toggle('revealed', revealNumeric);
+              }
+            }
+
+            if (t < 1) {
+              scanRaf = requestAnimationFrame(scanTick);
+            } else {
+              phaseStart = null;
+              phase = 'fadeout';
+              scanRaf = requestAnimationFrame(scanTick);
+            }
+
+          } else if (phase === 'fadeout') {
+            const t = Math.min(elapsed / FADE_MS, 1);
+            beam.style.opacity = String(1 - t);
+
+            if (t < 1) {
+              scanRaf = requestAnimationFrame(scanTick);
+            } else {
+              beam.style.opacity = '0';
+              revealNumeric = !revealNumeric;
+              // Pause efficace : setTimeout au lieu de brûler ~36 frames rAF inutiles
+              scanRaf = setTimeout(() => {
+                beam.style.left = '-4px';
+                phaseStart = null;
+                phase = 'scan';
+                scanRaf = requestAnimationFrame(scanTick);
+              }, GAP_MS);
+            }
+
+          } else {
+            // phase === 'gap' — uniquement au 1er démarrage (avant le 1er setTimeout)
+            if (elapsed >= GAP_MS) {
+              beam.style.left = '-4px';
+              phaseStart = null;
+              phase = 'scan';
+              scanRaf = requestAnimationFrame(scanTick);
+            } else {
+              scanRaf = requestAnimationFrame(scanTick);
+            }
+          }
+        }
+
+        // Rebuild au resize
+        window.addEventListener('resize', () => {
+          dirty = true;
+          buildCache();
+        }, { passive: true });
+
+        startScan();
+
+      } else {
+        // ── MODE DESKTOP : lerp fluide suivant la souris ──
+        let targetX  = null;
+        let currentX = null;
+        let rafId    = null;
+        let lastTime = null;
+
+        const HALF_LIFE = 55; // ms — réactif et fluide
+
+        function tick(ts) {
+          rafId = null;
+          if (targetX === null) return;
+
+          if (lastTime === null) lastTime = ts;
+          const dt = Math.min(ts - lastTime, 64);
+          lastTime = ts;
+
+          if (dirty) buildCache();
+
+          const alpha = 1 - Math.pow(0.5, dt / HALF_LIFE);
+          currentX += (targetX - currentX) * alpha;
+
+          applyBeam(currentX);
+
+          if (Math.abs(targetX - currentX) > 0.15) {
+            rafId = requestAnimationFrame(tick);
+          } else {
+            currentX = targetX;
+            applyBeam(currentX);
+            lastTime = null;
+          }
+        }
+
+        function scheduleUpdate() {
+          if (!rafId) rafId = requestAnimationFrame(tick);
+        }
+
+        // Init : barre au milieu du paragraphe
+        document.fonts.ready.then(() => {
+          dirty = true;
+          buildCache();
+          const r = p.getBoundingClientRect();
+          currentX = targetX = r.left + r.width * 0.5;
+          applyBeam(currentX);
+        });
+
+        // Resize / scroll : rebuild cache et reposition
+        let resizeTick = false;
+        function onLayoutChange() {
+          if (resizeTick) return;
+          resizeTick = true;
+          requestAnimationFrame(() => {
+            resizeTick = false;
+            dirty = true;
+            buildCache();
+            if (currentX !== null) {
+              const { left, right } = getLimits();
+              currentX = clamp(currentX, left, right);
+              targetX  = clamp(targetX,  left, right);
+              applyBeam(currentX);
+            }
+          });
+        }
+        window.addEventListener('resize', onLayoutChange, { passive: true });
+        window.addEventListener('scroll', onLayoutChange, { passive: true });
+
+        // Écoute souris uniquement
+        document.addEventListener('pointermove', e => {
+          // Ignorer les événements tactiles déguisés
+          if (e.pointerType === 'touch') return;
+          targetX = e.clientX;
+          p.classList.add('scanning');
+          scheduleUpdate();
+        }, { passive: true });
+      }
+
+    })();
+
+
+
+    // =============================================
+    // HERO MANIFEST — rotation auto + survol des axes
+    // =============================================
+    (function initManifest() {
+      const textbox = document.getElementById('manifestTextbox');
+      if (!textbox) return;
+
+      const terms    = Array.from(document.querySelectorAll('.hero-manifest-term'));
+      const questions = ['manifestQ1', 'manifestQ2', 'manifestQ3'];
+      let currentIdx  = 0;
+      let activeQ     = null;
+      let isHovered   = false;
+      let rotateTimer = null;
+      let leaveTimer  = null;
+      const DURATION  = 2800; // ms entre chaque question
+      const FADE      = 380;  // ms transition CSS
+
+      function showQ(id, fromRotation) {
+        // Masquer l'actuelle
+        if (activeQ && activeQ.id !== id) {
+          activeQ.classList.add('leaving');
+          activeQ.classList.remove('visible');
+          const prev = activeQ;
+          setTimeout(() => prev.classList.remove('leaving'), FADE);
+        }
+        const next = document.getElementById(id);
+        if (!next) return;
+        const isSame = activeQ?.id === id;
+        activeQ = next;
+        // Petit délai pour que le leaving parte avant l'arrivée
+        setTimeout(() => {
+          next.classList.remove('leaving');
+          next.classList.add('visible');
+        }, fromRotation && !isSame ? 60 : 0);
+      }
+
+      function rotate() {
+        if (isHovered) return;
+        showQ(questions[currentIdx], true);
+        // Sync le terme actif visuellement
+        terms.forEach((t, i) => t.classList.toggle('active', i === currentIdx));
+        currentIdx = (currentIdx + 1) % questions.length;
+        rotateTimer = setTimeout(rotate, DURATION);
+      }
+
+      // Démarrage différé pour laisser la page s'installer
+      setTimeout(rotate, 600);
+
+      // Survol d'un terme
+      terms.forEach((term, idx) => {
+        term.addEventListener('mouseenter', () => {
+          clearTimeout(leaveTimer);
+          clearTimeout(rotateTimer);
+          isHovered = true;
+
+          terms.forEach(t => t.classList.remove('active'));
+          term.classList.add('active');
+
+          const qId = term.dataset.q;
+          currentIdx = questions.indexOf(qId);
+          showQ(qId, false);
+        });
+
+        term.addEventListener('mouseleave', () => {
+          leaveTimer = setTimeout(() => {
+            isHovered = false;
+            // Reprend la rotation depuis la question suivante
+            currentIdx = (questions.indexOf(term.dataset.q) + 1) % questions.length;
+            rotate();
+          }, 200);
+        });
+      });
+
+      // Annule le leave si on glisse entre termes
+      terms.forEach(term => {
+        term.addEventListener('mouseenter', () => clearTimeout(leaveTimer));
+      });
+
+    })();
+
+  </script>
+</body>
+</html>
