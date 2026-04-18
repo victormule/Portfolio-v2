@@ -23,10 +23,10 @@
         <!-- Déplacement modéré pour garder la lisibilité -->
         <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
         <!-- Léger flou pour fondre les bords pixelisés -->
-        <feGaussianBlur in="displaced" stdDeviation="0.4" result="blurred"/>
+        <feGaussianBlur in="displaced" stdDeviation="0.2" result="blurred"/>
         <!-- Contraste pour redonner du mordant après le flou -->
         <feComponentTransfer in="blurred">
-          <feFuncA type="linear" slope="1.4" intercept="-0.1"/>
+          <feFuncA type="linear" slope="1.0" intercept="-0.1"/>
         </feComponentTransfer>
       </filter>
     </defs>
