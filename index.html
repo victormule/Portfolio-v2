@@ -8,11 +8,8 @@
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <title>Victor Mulé — Portfolio</title>
-  <!-- Préchargement image critique LCP -->
-  <link rel="preload" as="image" href="image/TitreBg2.webp" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <!-- Chargement asynchrone des polices : évite le blocage du rendu -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" onload="this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
@@ -22,14 +19,14 @@
     <defs>
       <filter id="rough-titre" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
         <!-- Bruit basse fréquence = déplacement large et organique -->
-        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="5" seed="7" result="noise"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="8" seed="7" result="noise"/>
         <!-- Déplacement modéré pour garder la lisibilité -->
         <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
         <!-- Léger flou pour fondre les bords pixelisés -->
         <feGaussianBlur in="displaced" stdDeviation="0.2" result="blurred"/>
         <!-- Contraste pour redonner du mordant après le flou -->
         <feComponentTransfer in="blurred">
-          <feFuncA type="linear" slope="1.2" intercept="-0.1"/>
+          <feFuncA type="linear" slope="1.0" intercept="-0.1"/>
         </feComponentTransfer>
       </filter>
     </defs>
@@ -753,9 +750,6 @@
     .section {
       padding: 96px 0;
       position: relative;
-      /* Rendu différé pour les sections hors écran — gain FCP/LCP */
-      content-visibility: auto;
-      contain-intrinsic-size: 0 600px;
     }
 
     .section + .section {
@@ -895,8 +889,6 @@
       object-fit: cover;
       filter: sepia(.08) contrast(1.05);
       transition: filter .4s, transform .4s;
-      /* Réserve l'espace avant chargement pour éviter CLS */
-      aspect-ratio: 372 / 260;
     }
 
     .card:hover .card-img {
@@ -991,7 +983,6 @@
       object-fit: cover;
       filter: sepia(.1) contrast(1.05);
       transition: transform .5s;
-      aspect-ratio: 370 / 240;
     }
 
     .num-card:hover .num-card-img { transform: scale(1.04); }
@@ -1129,7 +1120,6 @@
       object-fit: cover;
       filter: sepia(.08);
       transition: transform .5s;
-      aspect-ratio: 372 / 248;
     }
 
     .timeline-card:hover .timeline-media img { transform: scale(1.04); }
@@ -2188,7 +2178,7 @@
         <div class="num-grid reveal-stagger">
            <article class="num-card">
             <div class="num-card-img-wrap">
-              <img class="num-card-img" alt="Bidule — Amazonie(s)" src="image/Bidule.webp" loading="lazy" width="370" height="504" decoding="async"/>
+              <img class="num-card-img" alt="Bidule — Amazonie(s)" src="image/Bidule.webp" loading="lazy"/>
               <div class="num-card-overlay" aria-hidden="true"></div>
             </div>
             <div class="num-card-body">
@@ -2203,7 +2193,7 @@
           </article>
  <article class="num-card">
             <div class="num-card-img-wrap">
-              <img class="num-card-img" alt="Amazonie(s) — Quai Branly" src="image/Branly.webp" loading="lazy" width="370" height="304" decoding="async"/>
+              <img class="num-card-img" alt="Amazonie(s) — Quai Branly" src="image/Branly.webp" loading="lazy"/>
               <div class="num-card-overlay" aria-hidden="true"></div>
             </div>
             <div class="num-card-body">
@@ -2218,7 +2208,7 @@
           </article>
           <article class="num-card">
             <div class="num-card-img-wrap">
-              <img class="num-card-img" alt="Triangle TEAS" src="image/triangle.webp" loading="lazy" width="370" height="268" decoding="async"/>
+              <img class="num-card-img" alt="Triangle TEAS" src="image/triangle.webp" loading="lazy"/>
               <div class="num-card-overlay" aria-hidden="true"></div>
             </div>
             <div class="num-card-body">
@@ -2234,7 +2224,7 @@
           
           <article class="num-card">
             <div class="num-card-img-wrap">
-              <img class="num-card-img" alt="Géométrique — Netlify" src="image/geometrie2.webp" loading="lazy" width="370" height="268" decoding="async"/>
+              <img class="num-card-img" alt="Géométrique — Netlify" src="image/geometrie2.webp" loading="lazy"/>
               <div class="num-card-overlay" aria-hidden="true"></div>
             </div>
             <div class="num-card-body">
@@ -2249,7 +2239,7 @@
           </article>
           <article class="num-card">
             <div class="num-card-img-wrap">
-              <img class="num-card-img" alt="Bréguet 19 — Constat 3D" src="image/constat3D.webp" loading="lazy" width="370" height="246" decoding="async"/>
+              <img class="num-card-img" alt="Bréguet 19 — Constat 3D" src="image/constat3D.webp" loading="lazy"/>
               <div class="num-card-overlay" aria-hidden="true"></div>
             </div>
             <div class="num-card-body">
@@ -2298,12 +2288,12 @@
                 <div class="timeline-media">
                   <div class="carousel" aria-label="Diaporama stage Vinourd" id="vinourd-carousel">
                     <div class="track" id="vinourd-track">
-                      <img src="image/vinourd-atelier.webp" alt="Atelier Vinourd — vue d'ensemble" loading="lazy" width="392" height="219" decoding="async">
-                      <img src="image/vinourd-stage-1.webp" alt="Atelier Vinourd" loading="lazy" width="346" height="461" decoding="async">
-                      <img src="image/vinourd-stage-2.webp" alt="Atelier Vinourd" loading="lazy" width="392" height="219" decoding="async">
-                      <img src="image/vinourd-stage-3.webp" alt="Atelier Vinourd" loading="lazy" width="392" height="219" decoding="async">
-                      <img src="image/vinourd-stage-4.webp" alt="Atelier Vinourd" loading="lazy" width="392" height="219" decoding="async">
-                      <img src="image/vinourd-stage-5.webp" alt="Atelier Vinourd" loading="lazy" width="346" height="260" decoding="async">
+                      <img src="image/vinourd-atelier.webp" alt="Atelier Vinourd — vue d'ensemble">
+                      <img src="image/vinourd-stage-1.webp" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-2.webp" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-3.webp" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-4.webp" alt="Atelier Vinourd">
+                      <img src="image/vinourd-stage-5.webp" alt="Atelier Vinourd">
                     </div>
                   </div>
                 </div>
@@ -2325,7 +2315,7 @@
                   <p class="timeline-contact"><strong>INP</strong>, Galerie Colbert, 2 rue Vivienne — Paris.</p>
                 </div>
                 <div class="timeline-media">
-                  <img src="image/Partage.webp" alt="Partage et conservation" loading="lazy" width="372" height="248" decoding="async">
+                  <img src="image/Partage.webp" alt="Partage et conservation">
                 </div>
               </article>
             </div>
@@ -2340,7 +2330,7 @@
                   <p class="timeline-contact"><strong>INP</strong>, Galerie Colbert, 2 rue Vivienne — Paris.</p>
                 </div>
                 <div class="timeline-media">
-                  <img src="image/monument historique 5ed.webp" alt="monument historique 5ed" loading="lazy" width="372" height="248" decoding="async">
+                  <img src="image/monument historique 5ed.webp" alt="monument historique 5ed">
                 </div>
               </article>
             </div>
@@ -2506,7 +2496,6 @@
   <script>
     // =============================================
     // CUSTOM CURSOR — désactivé sur tactile
-    // Différé après le chargement pour réduire le TBT
     // =============================================
     const dot  = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
@@ -2515,45 +2504,36 @@
     const isTouchPrimary = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     if (isTouchPrimary) {
+      // Masquer complètement le curseur custom sur mobile
       dot.style.display  = 'none';
       ring.style.display = 'none';
     } else {
-      // Initialiser le curseur seulement après le premier idle
-      const initCursor = () => {
-        let mx = -100, my = -100, rx = -100, ry = -100;
-        let rafId;
+      let mx = -100, my = -100, rx = -100, ry = -100;
+      let rafId;
 
-        document.addEventListener('pointermove', e => {
-          if (e.pointerType === 'touch') return;
-          mx = e.clientX; my = e.clientY;
-          dot.style.left = mx + 'px';
-          dot.style.top  = my + 'px';
-          if (!rafId) rafId = requestAnimationFrame(animRing);
-        }, { passive: true });
+      document.addEventListener('pointermove', e => {
+        if (e.pointerType === 'touch') return;
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+        if (!rafId) rafId = requestAnimationFrame(animRing);
+      }, { passive: true });
 
-        function animRing() {
-          rafId = null;
-          rx += (mx - rx) * .14;
-          ry += (my - ry) * .14;
-          ring.style.left = rx + 'px';
-          ring.style.top  = ry + 'px';
-          if (Math.abs(mx - rx) > 0.5 || Math.abs(my - ry) > 0.5) {
-            rafId = requestAnimationFrame(animRing);
-          }
+      function animRing() {
+        rafId = null;
+        rx += (mx - rx) * .14;
+        ry += (my - ry) * .14;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        if (Math.abs(mx - rx) > 0.5 || Math.abs(my - ry) > 0.5) {
+          rafId = requestAnimationFrame(animRing);
         }
-
-        document.querySelectorAll('a, button, .card, .num-card, .timeline-card').forEach(el => {
-          el.addEventListener('pointerenter', () => document.body.classList.add('cursor-hover'));
-          el.addEventListener('pointerleave', () => document.body.classList.remove('cursor-hover'));
-        });
-      };
-
-      // Utiliser requestIdleCallback si disponible, sinon setTimeout
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(initCursor, { timeout: 1000 });
-      } else {
-        setTimeout(initCursor, 200);
       }
+
+      document.querySelectorAll('a, button, .card, .num-card, .timeline-card').forEach(el => {
+        el.addEventListener('pointerenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('pointerleave', () => document.body.classList.remove('cursor-hover'));
+      });
     }
 
     // =============================================
@@ -2764,14 +2744,11 @@
         return m[2] ? parseInt(m[2]) : parseInt(m[0]);
       };
 
-      let firstCard = true;
       const buildCard = c => {
         const art = document.createElement('article');
         art.className = 'card';
-        const fetchPriority = firstCard ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"';
-        firstCard = false;
         art.innerHTML = `
-          <img class="card-img" alt="${c.alt}" src="${c.img}" ${fetchPriority} width="372" height="260" decoding="async"/>
+          <img class="card-img" alt="${c.alt}" src="${c.img}" loading="lazy" width="400" height="220"/>
           <div class="card-body">
             <div class="card-kicker">${c.kicker}</div>
             <h3 class="card-title">${c.title}</h3>
@@ -2821,13 +2798,8 @@
 
         function moveCursor(activeTab) {
           if (!activeTab) return;
-          // Lire AVANT d'écrire pour éviter le forced reflow
-          const top    = activeTab.offsetTop;
-          const height = activeTab.offsetHeight;
-          requestAnimationFrame(() => {
-            cursor.style.top    = top + 'px';
-            cursor.style.height = height + 'px';
-          });
+          cursor.style.top    = activeTab.offsetTop + 'px';
+          cursor.style.height = activeTab.offsetHeight + 'px';
         }
 
         // Init
@@ -3091,7 +3063,7 @@
     // • Desktop : suit la souris (pointermove)
     // • Mobile  : animation automatique gauche→droite en boucle
     // =============================================
-    setTimeout(function initScan() {
+    (function initScan() {
       const p = document.querySelector('.hero-desc');
       if (!p || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -3118,7 +3090,7 @@
       const spaceW = Math.max(measure(' ', FONT_MS), measure(' ', FONT_NU));
 
       // Texte brut → mots
-      const raw   = p.textContent.replace(/\s+/g, ' ').trim();
+      const raw   = p.innerText.replace(/\s+/g, ' ').trim();
       const words = raw.split(' ');
       p.innerHTML = '';
 
@@ -3394,7 +3366,7 @@
         }, { passive: true });
       }
 
-    }, 800);  // Différé pour réduire le TBT au chargement
+    })();
 
 
 
